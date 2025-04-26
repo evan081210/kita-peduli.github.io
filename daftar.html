@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - Kita Peduli</title>
+    <style>
+        /* CSS sama dengan login.html */
+        <style>
+    :root {
+        --primary: #2c3e50;
+        --secondary: #3498db;
+        --accent: #e74c3c;
+    }
+
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .auth-container {
+        width: 400px;
+        padding: 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        animation: slideUp 0.5s ease;
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .auth-header h1 {
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+        font-size: 1.8rem;
+    }
+
+    .auth-header p {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .input-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .input-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--primary);
+        font-weight: 500;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .input-group input:focus {
+        outline: none;
+        border-color: var(--secondary);
+    }
+
+    button {
+        width: 100%;
+        background: var(--secondary);
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    button:hover {
+        background: #10354e;
+       
+    }
+
+    .error-message {
+        color: #e74c3c;
+        font-size: 0.9rem;
+        text-align: center;
+        margin: 1rem 0;
+        min-height: 20px;
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #eee;
+    }
+
+    .auth-footer a {
+        color: var(--secondary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .auth-footer a:hover {
+        color: #2980b9;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .auth-container {
+            width: 90%;
+            padding: 1.5rem;
+        }
+        
+        .auth-header h1 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>Buat Akun Baru</h1>
+            <p>Isi form berikut untuk mendaftar</p>
+        </div>
+
+        <form id="signupForm" onsubmit="handleSignup(event)">
+            <div class="input-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="signupName" required>
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="signupEmail" required>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="signupPassword" required minlength="6">
+            </div>
+
+            <button type="submit">DAFTAR</button>
+            <div id="signupError" class="error-message"></div>
+        </form>
+
+        <div class="auth-footer">
+            <p>Sudah punya akun? <a href="login.html">Login di sini</a></p>
+        </div>
+    </div>
+
+    <script>
+        const users = JSON.parse(localStorage.getItem('users')) || {};
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+
+            if(users[email]) {
+                showError('signupError', 'Email sudah terdaftar!');
+                return;
+            }
+
+            users[email] = {
+                name: name,
+                password: password,
+                goodDeeds: 0,
+                createdAt: new Date().toISOString()
+            };
+
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Pendaftaran berhasil! Silakan login.');
+            window.location.href = 'login.html';
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            setTimeout(() => errorElement.textContent = '', 3000);
+        }
+    </script>
+</body>
+</html>
